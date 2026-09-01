@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Repositories\ProductRepository;
+use App\Repositories\ProductRepositoryInterface;
 
 class ProductController extends Controller
 {
     public function __construct(
-        protected ProductRepository $productRepository
+        protected ProductRepositoryInterface $productRepository
     ) {}
 
     public function index()

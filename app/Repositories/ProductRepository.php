@@ -4,7 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Product;
 
-class ProductRepository
+
+class ProductRepository implements ProductRepositoryInterface
 {
     public function getAll()
     {
