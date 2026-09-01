@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Repositories\ProductRepositoryInterface;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
     public function __construct(
-        protected ProductRepositoryInterface $productRepository
+        protected ProductService $productService
     ) {}
 
     public function index()
     {
-        $products = $this->productRepository->getAll();
+        $products = $this->productService->getAll();
 
         return response()->json([
             'success' => true,
@@ -25,7 +25,7 @@ class ProductController extends Controller
 
     public function show(int $id)
     {
-        $product = $this->productRepository->findById($id);
+        $product = $this->productService->findById($id);
 
         return response()->json([
             'success' => true,
@@ -41,7 +41,7 @@ class ProductController extends Controller
             'quantity' => 'required|integer|min:0',
         ]);
 
-        $product = $this->productRepository->create($validated);
+        $product = $this->productService->create($validated);
 
         return response()->json([
             'success' => true,
@@ -57,7 +57,7 @@ class ProductController extends Controller
             'quantity' => 'required|integer|min:0',
         ]);
 
-        $product = $this->productRepository->update($id, $validated);
+        $product = $this->productService->update($id, $validated);
 
         return response()->json([
             'success' => true,
@@ -67,12 +67,23 @@ class ProductController extends Controller
     }
     public function destroy(int $id)
     {
-        $product = $this->productRepository->delete($id);
+        $product = $this->productService->delete($id);
 
         return response()->json([
             'success' => true,
             'message' => 'Produk berhasil dihapus',
             'data' => null
+        ]);
+    }
+    public function aboveQuantity(int $quantity)
+    {
+        $products = $this->productService
+            ->getProductsAboveQuantity($quantity);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil diambil',
+            'data' => $products
         ]);
     }
 }
