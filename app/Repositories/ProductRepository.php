@@ -26,4 +26,12 @@ class ProductRepository
 
         return $product;
     }
+    public function delete(int $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+
+        return $product;
+    }
 }
