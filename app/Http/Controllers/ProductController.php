@@ -86,4 +86,14 @@ class ProductController extends Controller
             'data' => $products
         ]);
     }
+    public function decreaseQuantity(int $id, int $amount)
+{
+    $product = $this->productService->decreaseQuantity($id, $amount);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Quantity berhasil dikurangi',
+        'data' => $product
+    ]);
+}
 }

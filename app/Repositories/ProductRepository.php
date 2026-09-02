@@ -36,7 +36,13 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
     public function getAboveQuantity(int $quantity)
-{
-    return Product::where('quantity', '>', $quantity)->get();
-}
+    {
+        return Product::where('quantity', '>', $quantity)->get();
+    }
+    public function save(Product $product)
+    {
+        $product->save();
+
+        return $product;
+    }
 }

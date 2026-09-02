@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ProductRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
@@ -43,5 +44,25 @@ class ProductService
     public function getProductsAboveQuantity(int $quantity)
     {
         return $this->productRepository->getAboveQuantity($quantity);
+    }
+    public function decreaseQuantity(int $id, int $amount)
+    {
+        return DB::transaction(function () use ($id, $amount) {
+            $product = $this->productRepository->findById($id);
+
+            if (!$product) {
+                throw new \Exception('Produk tidak ditemukan.');
+            }
+
+            if ($product->quantity < $amount) {
+                throw new \Exception('Stock tidak mencukupi.');
+            }
+
+            $product->quantity -= $amount;
+
+            $this->productRepository->save($product);
+
+            return $product;
+        });
     }
 }

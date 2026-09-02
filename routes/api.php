@@ -14,3 +14,7 @@ Route::get('/products/quantity/{quantity}', [
     ProductController::class,
     'aboveQuantity'
 ]);
+Route::post('/products/{id}/decrease/{amount}', [
+    ProductController::class,
+    'decreaseQuantity'
+]);
