@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -22,3 +23,12 @@ Route::post('/products/{id}/decrease/{amount}', [
 ]);
 
 Route::post('/checkout', [OrderController::class, 'checkout']);
+Route::delete('/test-delete-product', function () {
+
+    Gate::authorize('delete-product');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Kamu boleh menghapus produk.',
+    ]);
+});

@@ -7,6 +7,7 @@ use App\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductRepositoryInterface;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +22,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Product::observe(ProductObserver::class);
+
+        Gate::define('delete-product', function ($user) {
+            return $user->role === 'admin';
+        });
     }
 }
