@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+use App\Http\Controllers\ProductController;
 
 Route::get('/products', function () {
     return 'Daftar Produk';
@@ -17,4 +15,7 @@ Route::get('/products/{id}', function ($id) {
 Route::post('/products', function () {
     return 'POST BERHASIL';
 });
+
+
+
 

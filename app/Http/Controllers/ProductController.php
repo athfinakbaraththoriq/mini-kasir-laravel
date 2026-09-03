@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -67,7 +68,11 @@ class ProductController extends Controller
     }
     public function destroy(int $id)
     {
-        $product = $this->productService->delete($id);
+        $product = Product::findOrFail($id);
+
+        Gate::authorize('delete', $product);
+
+        $this->productService->delete($id);
 
         return response()->json([
             'success' => true,
@@ -87,13 +92,13 @@ class ProductController extends Controller
         ]);
     }
     public function decreaseQuantity(int $id, int $amount)
-{
-    $product = $this->productService->decreaseQuantity($id, $amount);
+    {
+        $product = $this->productService->decreaseQuantity($id, $amount);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Quantity berhasil dikurangi',
-        'data' => $product
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Quantity berhasil dikurangi',
+            'data' => $product
+        ]);
+    }
 }
