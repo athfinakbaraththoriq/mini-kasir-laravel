@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\InsufficientStockException;
 
 class ProductService
 {
@@ -55,7 +56,7 @@ class ProductService
             }
 
             if ($product->quantity < $amount) {
-                throw new \Exception('Stock tidak mencukupi.');
+                throw new InsufficientStockException('Stock tidak mencukupi.');
             }
 
             $product->quantity -= $amount;
