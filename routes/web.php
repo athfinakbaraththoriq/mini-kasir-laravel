@@ -16,6 +16,8 @@ Route::post('/products', function () {
     return 'POST BERHASIL';
 });
 
-
+Route::get('/test-error', function () {
+    throw new Exception('Terjadi kesalahan!');
+});
 
 
