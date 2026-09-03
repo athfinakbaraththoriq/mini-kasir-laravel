@@ -13,3 +13,4 @@ Route::get('/products/{id}', function ($id) {
 Route::post('/products', function () {
     return 'POST BERHASIL';
 });
+
