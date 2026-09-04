@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Support\Facades\Gate;
 use App\Helpers\ApiResponse;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -16,11 +17,13 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = $this->productService->getAll();
+        $products = $this->productService
+            ->getAll()
+            ->load('categories');
 
         return ApiResponse::success(
             'Data produk berhasil diambil',
-            $products
+            ProductResource::collection($products)
         );
     }
 
@@ -28,11 +31,10 @@ class ProductController extends Controller
     {
         $product = $this->productService->findById($id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Produk berhasil ditemukan',
-            'data' => $product
-        ]);
+        return ApiResponse::success(
+            'Data produk berhasil diambil',
+            new ProductResource($product)
+        );
     }
     public function store(Request $request)
     {

@@ -29,3 +29,6 @@ Route::post('/products/{id}/decrease/{amount}', [
 Route::post('/checkout', [OrderController::class, 'checkout']);
 Route::middleware(['auth:sanctum', 'admin'])
     ->delete('/products/{id}', [ProductController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')
+    ->get('/orders/{id}', [OrderController::class, 'show']);

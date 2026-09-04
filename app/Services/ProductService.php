@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\InsufficientStockException;
+use App\Models\Product;
 
 class ProductService
 {
@@ -65,5 +66,26 @@ class ProductService
 
             return $product;
         });
+    }
+    public function processProductsInBatch()
+    {
+        Product::chunk(5, function ($products) {
+            foreach ($products as $product) {
+                logger()->info(
+                    "Memproses produk: {$product->nama} | Stok: {$product->quantity}"
+                );
+            }
+        });
+    }
+    public function processLowStockInBatch()
+    {
+        Product::where('quantity', '<=', 5)
+            ->chunk(5, function ($products) {
+                foreach ($products as $product) {
+                    logger()->info(
+                        "Low stock: {$product->nama} | Stok: {$product->quantity}"
+                    );
+                }
+            });
     }
 }
