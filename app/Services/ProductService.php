@@ -6,6 +6,7 @@ use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\InsufficientStockException;
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class ProductService
 {
@@ -15,7 +16,11 @@ class ProductService
 
     public function getAll()
     {
-        return $this->productRepository->getAll();
+        return Cache::remember(
+            'products',
+            60,
+            fn() => $this->productRepository->getAll()
+        );
     }
 
     public function findById(int $id)
